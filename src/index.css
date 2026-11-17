@@ -1,0 +1,147 @@
+@import 'tailwindcss';
+
+@theme {
+  --color-navy-950: #081a33;
+  --color-navy-900: #0c2647;
+  --color-navy-800: #123a6b;
+  --color-navy-700: #1a4d8c;
+  --color-navy-500: #3f78bd;
+  --color-kombi-100: #e6eff4;
+  --color-kombi-200: #cfe0ea;
+  --color-kombi-400: #9dbcd2;
+  --color-cream-50: #fbf7ef;
+  --color-cream-100: #f4ecdd;
+  --color-cream-200: #ebdfc8;
+  --color-cream-300: #dccaa8;
+  --color-gold-400: #f2b631;
+  --color-gold-500: #e8a72a;
+  --color-amber-600: #c97a1c;
+  --color-amber-700: #a35d12;
+  --color-ink: #16130f;
+  --color-ink-soft: #4a4238;
+
+  --font-display: 'Fraunces', Georgia, serif;
+  --font-sans: 'Manrope', system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  --animate-marquee: marquee 38s linear infinite;
+  --animate-float: float 6s ease-in-out infinite;
+
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 5rem;
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    @apply bg-cream-50 text-ink font-sans antialiased;
+    overflow-x: hidden;
+  }
+  ::selection {
+    @apply bg-gold-400 text-navy-950;
+  }
+  :focus-visible {
+    outline: 3px solid var(--color-gold-500);
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@layer components {
+  .container-x {
+    @apply mx-auto w-full max-w-7xl px-5 sm:px-8 lg:px-12;
+  }
+  .eyebrow {
+    @apply inline-flex items-center gap-3 text-[0.72rem] font-bold uppercase tracking-[0.22em];
+  }
+  .eyebrow::before {
+    content: '';
+    @apply block h-px w-8 bg-current opacity-60;
+  }
+  .display {
+    font-family: var(--font-display);
+    font-variation-settings: 'opsz' 144;
+    letter-spacing: -0.02em;
+  }
+  .btn {
+    @apply relative inline-flex min-h-12 items-center justify-center gap-2 rounded-full px-6 text-[0.95rem] font-bold transition-all duration-300 ease-out;
+  }
+  .btn-primary {
+    @apply bg-gold-400 text-navy-950 shadow-[0_6px_0_-1px_var(--color-amber-600)] hover:-translate-y-0.5 hover:bg-gold-500 hover:shadow-[0_8px_0_-1px_var(--color-amber-700)] active:translate-y-0.5 active:shadow-[0_2px_0_-1px_var(--color-amber-700)];
+  }
+  .btn-navy {
+    @apply bg-navy-800 text-cream-50 hover:-translate-y-0.5 hover:bg-navy-900;
+  }
+  .btn-ghost {
+    @apply border-2 border-current hover:-translate-y-0.5;
+  }
+  .price {
+    font-family: var(--font-display);
+    font-variant-numeric: lining-nums tabular-nums;
+    letter-spacing: -0.02em;
+  }
+
+  /* Reveal on scroll */
+  [data-reveal] {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 0.9s cubic-bezier(0.2, 0.7, 0.2, 1), transform 0.9s cubic-bezier(0.2, 0.7, 0.2, 1);
+    transition-delay: var(--d, 0ms);
+  }
+  [data-reveal='fade'] { transform: none; }
+  [data-reveal='left'] { transform: translateX(-32px); }
+  [data-reveal='right'] { transform: translateX(32px); }
+  .no-anim [data-reveal],
+  .no-anim .animate-marquee,
+  .no-anim .animate-float {
+    transition: none !important;
+    animation: none !important;
+  }
+  [data-reveal].is-visible {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* Grão sutil para superfícies */
+  .grain {
+    position: relative;
+    isolation: isolate;
+  }
+  .grain::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    opacity: 0.35;
+    mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .09 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  /* Bolhas da ilustração de copo */
+  .bubble {
+    animation: rise 3.2s ease-in infinite;
+  }
+  @keyframes rise {
+    0% { transform: translateY(0); opacity: 0; }
+    15% { opacity: 0.9; }
+    100% { transform: translateY(-120px); opacity: 0; }
+  }
+}
